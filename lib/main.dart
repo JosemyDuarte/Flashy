@@ -14,22 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Metronome',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Metronome'),
@@ -96,29 +81,31 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: GestureDetector(
         onTap: _recordPress,
-        child: Center(
-          child: InkWell(
-            onTap: _recordPress, // This ensures the InkWell is tappable
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'You have pushed the button this many times:',
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: InkWell(
+                onTap: _recordPress,
+                child: Center(
+                  child: Text(
+                    'Tap to record a pattern',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                 ),
-                Text(
-                  '${_presses.length}',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                const Text(
-                  'Pattern:',
-                ),
-                Text(
-                  '${_durations}',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ],
+              ),
             ),
-          ),
+            Row(
+              children: [
+                const Text(
+                  'Number of presses: ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text('${_presses.length}'),
+              ],
+            )
+          ],
         ),
       ),
       persistentFooterButtons: <Widget>[
@@ -131,7 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PatternBackgroundWidget(pattern: _durations),
+                builder: (context) =>
+                    PatternBackgroundWidget(pattern: _durations),
               ),
             );
           },
