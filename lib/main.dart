@@ -89,57 +89,55 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return GestureDetector(
-      onTap: _recordPress,
-      child: Scaffold(
-        appBar: AppBar(
-          // TRY THIS: Try changing the color here to a specific color (to
-          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-          // change color while the other colors stay the same.
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              Text(
-                '${_presses.length}',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const Text(
-                'Pattern:',
-              ),
-              Text(
-                '${_durations}',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ],
-          ),
-        ),
-        persistentFooterButtons: <Widget>[
-          TextButton(
-            onPressed: _clearPresses,
-            child: const Icon(Icons.bolt),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        PatternBackgroundWidget(pattern: _durations)),
-              );
-            },
-            child: const Icon(Icons.play_arrow),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
       ),
+      body: GestureDetector(
+        onTap: _recordPress,
+        child: Center(
+          child: InkWell(
+            onTap: _recordPress, // This ensures the InkWell is tappable
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'You have pushed the button this many times:',
+                ),
+                Text(
+                  '${_presses.length}',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const Text(
+                  'Pattern:',
+                ),
+                Text(
+                  '${_durations}',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      persistentFooterButtons: <Widget>[
+        TextButton(
+          onPressed: _clearPresses,
+          child: const Icon(Icons.bolt),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PatternBackgroundWidget(pattern: _durations),
+              ),
+            );
+          },
+          child: const Icon(Icons.play_arrow),
+        ),
+      ],
     );
   }
 }
