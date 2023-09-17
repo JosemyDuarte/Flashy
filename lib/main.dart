@@ -41,13 +41,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //field to record the timestamp of each press.
   List<Duration> _durations = [];
   bool _isRecording = false;
-  String centerText = 'Tap to start recording';
 
   DateTime lastPress = DateTime.timestamp();
   DateTime previousPress = DateTime.timestamp();
+  String centerText = 'Tap to start recording';
 
   void _recordPress() {
     setState(() {
@@ -80,10 +79,19 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _isRecording = false;
       if (_durations.length > 0) {
-        centerText = 'Hit play to start flashing';
+        centerText = 'Hit play to start flashing\n\n or tap to record again';
       } else
         centerText = 'Tap to start recording';
     });
+  }
+
+  void _playRecording() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PatternBackgroundWidget(pattern: _durations),
+      ),
+    );
   }
 
   @override
@@ -137,19 +145,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         persistentFooterButtons: <Widget>[
           TextButton(
-            onPressed: _clearPresses,
+            onPressed: _durations.length > 0 ? _clearPresses : null,
             child: const Icon(Icons.bolt),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      PatternBackgroundWidget(pattern: _durations),
-                ),
-              );
-            },
+            onPressed:
+                !_isRecording && _durations.length > 0 ? _playRecording : null,
             child: const Icon(Icons.play_arrow),
           ),
           TextButton(
