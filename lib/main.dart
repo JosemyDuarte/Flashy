@@ -42,33 +42,35 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   //field to record the timestamp of each press.
-  List<DateTime> _presses = [];
   List<Duration> _durations = [];
-  bool recording = false;
+  bool _isRecording = false;
   String centerText = 'Tap to start recording';
+
+  DateTime lastPress = DateTime.timestamp();
+  DateTime previousPress = DateTime.timestamp();
 
   void _recordPress() {
     setState(() {
-      recording = true;
-      centerText = 'Recording...';
+      if (!_isRecording) {
+        _isRecording = true;
+        centerText = 'Recording...';
+        lastPress = DateTime.timestamp();
 
-      // Record the current timestamp.
-      _presses.add(DateTime.timestamp());
-
-      // Calculate the durations between each press.
-      _durations = [];
-      for (int i = 1; i < _presses.length; i++) {
-        _durations.add(_presses[i].difference(_presses[i - 1]));
+        return;
       }
+
+      previousPress = lastPress;
+      lastPress = DateTime.timestamp();
+
+      _durations.add(lastPress.difference(previousPress));
     });
   }
 
   // clean up the presses and durations
   void _clearPresses() {
     setState(() {
-      recording = false;
+      _isRecording = false;
       centerText = 'Tap to start recording';
-      _presses = [];
       _durations = [];
     });
   }
@@ -76,8 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
   // stop recording
   void _stopRecording() {
     setState(() {
-      recording = false;
-      if (_presses.length > 0) {
+      _isRecording = false;
+      if (_durations.length > 0) {
         centerText = 'Hit play to start flashing';
       } else
         centerText = 'Tap to start recording';
@@ -86,65 +88,76 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: InkWell(
-              onTap: _recordPress,
-              child: Center(
-                child: Text(
-                  '${centerText}',
-                  style: Theme.of(context).textTheme.headlineMedium,
+    return MaterialApp(
+      title: 'Flasher',
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text(widget.title),
+        ),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: InkWell(
+                onTap: _recordPress,
+                child: Center(
+                  child: Text(
+                    '${centerText}',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                 ),
               ),
             ),
-          ),
-          Row(
-            children: [
-              const Text(
-                'Taps: ',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+            Row(
+              children: [
+                const Text(
+                  'Flashes: ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text('${_presses.length}'),
-            ],
-          )
+                Text('${_durations.length}'),
+              ],
+            ),
+            OverflowBar(
+              children: [
+                for (var i = 0; i < _durations.length; i++)
+                  Container(
+                    width: 10,
+                    height: 10,
+                    margin: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: i % 2 == 0 ? Colors.black : Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+              ],
+            )
+          ],
+        ),
+        persistentFooterButtons: <Widget>[
+          TextButton(
+            onPressed: _clearPresses,
+            child: const Icon(Icons.bolt),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      PatternBackgroundWidget(pattern: _durations),
+                ),
+              );
+            },
+            child: const Icon(Icons.play_arrow),
+          ),
+          TextButton(
+            onPressed: _isRecording ? _stopRecording : null,
+            child: const Icon(Icons.stop),
+          ),
         ],
       ),
-      persistentFooterButtons: <Widget>[
-        TextButton(
-          onPressed: _clearPresses,
-          child: const Icon(Icons.bolt),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    PatternBackgroundWidget(pattern: _durations),
-              ),
-            );
-          },
-          child: const Icon(Icons.play_arrow),
-        ),
-        TextButton(
-          onPressed: _stopRecording,
-          child: const Icon(Icons.stop),
-        ),
-      ],
     );
   }
 }
