@@ -142,12 +142,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: _durations.length > 0 ? _clearPresses : null,
                 child: const Icon(Icons.bolt),
               ),
+              Spacer(),
               TextButton(
                 onPressed: !_isRecording && _durations.length > 0
                     ? _playRecording
                     : null,
                 child: const Icon(Icons.play_arrow),
               ),
+              Spacer(),
               TextButton(
                 onPressed: _isRecording ? _stopRecording : null,
                 child: const Icon(Icons.stop),
