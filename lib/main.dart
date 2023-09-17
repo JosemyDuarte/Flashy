@@ -44,9 +44,14 @@ class _MyHomePageState extends State<MyHomePage> {
   //field to record the timestamp of each press.
   List<DateTime> _presses = [];
   List<Duration> _durations = [];
+  bool recording = false;
+  String centerText = 'Tap to start recording';
 
   void _recordPress() {
     setState(() {
+      recording = true;
+      centerText = 'Recording...';
+
       // Record the current timestamp.
       _presses.add(DateTime.timestamp());
 
@@ -61,8 +66,21 @@ class _MyHomePageState extends State<MyHomePage> {
   // clean up the presses and durations
   void _clearPresses() {
     setState(() {
+      recording = false;
+      centerText = 'Tap to start recording';
       _presses = [];
       _durations = [];
+    });
+  }
+
+  // stop recording
+  void _stopRecording() {
+    setState(() {
+      recording = false;
+      if (_presses.length > 0) {
+        centerText = 'Hit play to start flashing';
+      } else
+        centerText = 'Tap to start recording';
     });
   }
 
@@ -79,34 +97,31 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: GestureDetector(
-        onTap: _recordPress,
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: InkWell(
-                onTap: _recordPress,
-                child: Center(
-                  child: Text(
-                    'Tap to record a pattern',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: InkWell(
+              onTap: _recordPress,
+              child: Center(
+                child: Text(
+                  '${centerText}',
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
             ),
-            Row(
-              children: [
-                const Text(
-                  'Number of presses: ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+          ),
+          Row(
+            children: [
+              const Text(
+                'Taps: ',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
                 ),
-                Text('${_presses.length}'),
-              ],
-            )
-          ],
-        ),
+              ),
+              Text('${_presses.length}'),
+            ],
+          )
+        ],
       ),
       persistentFooterButtons: <Widget>[
         TextButton(
@@ -124,6 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
             );
           },
           child: const Icon(Icons.play_arrow),
+        ),
+        TextButton(
+          onPressed: _stopRecording,
+          child: const Icon(Icons.stop),
         ),
       ],
     );
