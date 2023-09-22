@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:metronome/FlashingScreen.dart';
 
 class RecorderWidget extends StatefulWidget {
+  final String title;
+  final String settings;
+
+  const RecorderWidget({required this.title, required this.settings});
+
   @override
   _RecorderWidgetState createState() => _RecorderWidgetState();
 }
 
 class _RecorderWidgetState extends State<RecorderWidget> {
-  List<Duration> durations = [];
-  bool isRecording = false;
-
   List<Duration> _durations = [];
   bool _isRecording = false;
 
@@ -38,7 +40,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
   void _clearPresses() {
     setState(() {
       _isRecording = false;
-      centerText = 'Tap to start recording';
+      centerText = 'Tap to start recording - ${widget.settings}';
       _durations = [];
     });
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:metronome/FlashingScreen.dart';
 import 'package:metronome/Recorder.dart';
+import 'package:metronome/Settings.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,58 +34,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Duration> _durations = [];
-  bool _isRecording = false;
-
-  DateTime lastPress = DateTime.timestamp();
-  DateTime previousPress = DateTime.timestamp();
-  String centerText = 'Tap to start recording';
-
-  void _recordPress() {
-    setState(() {
-      if (!_isRecording) {
-        _isRecording = true;
-        centerText = 'Recording...';
-        lastPress = DateTime.timestamp();
-
-        return;
-      }
-
-      previousPress = lastPress;
-      lastPress = DateTime.timestamp();
-
-      _durations.add(lastPress.difference(previousPress));
-    });
-  }
-
-  // clean up the presses and durations
-  void _clearPresses() {
-    setState(() {
-      _isRecording = false;
-      centerText = 'Tap to start recording';
-      _durations = [];
-    });
-  }
-
-  // stop recording
-  void _stopRecording() {
-    setState(() {
-      _isRecording = false;
-      if (_durations.length > 0) {
-        centerText = 'Hit play to start flashing\n\n or tap to record again';
-      } else
-        centerText = 'Tap to start recording';
-    });
-  }
-
-  void _playRecording() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PatternBackgroundWidget(pattern: _durations),
-      ),
-    );
-  }
+  String settings = 'Settings';
 
   @override
   Widget build(BuildContext context) {
@@ -104,8 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
               )),
           body: TabBarView(
             children: [
-              RecorderWidget(),
-              Container(color: Colors.black26),
+              RecorderWidget(title: widget.title, settings: settings),
+              SettingsWidget(onSettingsChanged: (settings) {
+                setState(() {
+                  this.settings = "Something else";
+                });
+              }),
             ],
           ),
         ),
