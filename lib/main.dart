@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:metronome/FlashingScreen.dart';
+import 'package:metronome/Recorder.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,12 +13,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Metronome',
+      title: 'Flasher',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Metronome'),
+      home: const MyHomePage(title: 'Flasher'),
     );
   }
 }
@@ -89,74 +90,25 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flasher',
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
-        ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: InkWell(
-                onTap: _recordPress,
-                child: Center(
-                  child: Text(
-                    '${centerText}',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                const Text(
-                  'Flashes: ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text('${_durations.length}'),
-              ],
-            ),
-            OverflowBar(
-              children: [
-                for (var i = 0; i < _durations.length; i++)
-                  Container(
-                    width: 10,
-                    height: 10,
-                    margin: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: i % 2 == 0 ? Colors.black : Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-              ],
-            )
-          ],
-        ),
-        persistentFooterButtons: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center, // Center the buttons
-            children: <Widget>[
-              TextButton(
-                onPressed: _durations.length > 0 ? _clearPresses : null,
-                child: const Icon(Icons.bolt),
-              ),
-              Spacer(),
-              TextButton(
-                onPressed: !_isRecording && _durations.length > 0
-                    ? _playRecording
-                    : null,
-                child: const Icon(Icons.play_arrow),
-              ),
-              Spacer(),
-              TextButton(
-                onPressed: _isRecording ? _stopRecording : null,
-                child: const Icon(Icons.stop),
-              ),
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+              title: Text(widget.title),
+              bottom: const TabBar(
+                tabs: [
+                  Tab(text: 'Recorder'),
+                  Tab(text: 'Settings'),
+                ],
+              )),
+          body: TabBarView(
+            children: [
+              RecorderWidget(),
+              Container(color: Colors.black26),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
