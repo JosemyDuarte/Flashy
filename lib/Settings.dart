@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class FlasherSettings {
   List<Duration> patterns;
@@ -49,20 +50,68 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Settings Widget'),
+            Text('Vibrate'),
             Switch(
               value: currentSettings.vibrate,
               onChanged: (newValue) {
-                FlasherSettings newSettings = FlasherSettings(
+                updateSettings(FlasherSettings(
                   patterns: currentSettings.patterns,
                   vibrate: newValue,
                   offColor: currentSettings.offColor,
                   onColor: currentSettings.onColor,
-                );
-                updateSettings(newSettings);
+                ));
               },
             ),
-
+            MaterialColorPicker(
+              allowShades: false, // default true
+              onMainColorChange: (ColorSwatch? offColor) {
+                if (offColor == null) return;
+                updateSettings(FlasherSettings(
+                  patterns: currentSettings.patterns,
+                  vibrate: currentSettings.vibrate,
+                  offColor: Color.fromRGBO(
+                    offColor.red,
+                    offColor.green,
+                    offColor.blue,
+                    offColor.opacity,
+                  ),
+                  onColor: currentSettings.onColor,
+                ));
+              },
+              selectedColor: currentSettings.offColor,
+              colors: [
+                Colors.red,
+                Colors.deepOrange,
+                Colors.yellow,
+                Colors.lightGreen,
+                Colors.grey,
+              ],
+            ),
+            MaterialColorPicker(
+              allowShades: false, // default true
+              onMainColorChange: (ColorSwatch? onColor) {
+                if (onColor == null) return;
+                updateSettings(FlasherSettings(
+                  patterns: currentSettings.patterns,
+                  vibrate: currentSettings.vibrate,
+                  offColor: currentSettings.offColor,
+                  onColor: Color.fromRGBO(
+                    onColor.red,
+                    onColor.green,
+                    onColor.blue,
+                    onColor.opacity,
+                  ),
+                ));
+              },
+              selectedColor: currentSettings.onColor,
+              colors: [
+                Colors.red,
+                Colors.deepOrange,
+                Colors.yellow,
+                Colors.lightGreen,
+                Colors.grey,
+              ],
+            )
           ],
         ),
       ),
