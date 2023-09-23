@@ -34,7 +34,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String settings = 'Settings';
+  FlasherSettings settings = FlasherSettings();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
               RecorderWidget(title: widget.title, settings: settings),
               SettingsWidget(onSettingsChanged: (settings) {
                 setState(() {
-                  this.settings = "Something else";
+                  this.settings = settings;
                 });
               }),
             ],

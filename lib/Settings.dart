@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class FlasherSettings {
-  List<Duration> patterns;
-
   bool vibrate;
 
   Color offColor;
@@ -11,7 +9,6 @@ class FlasherSettings {
   Color onColor;
 
   FlasherSettings({
-    this.patterns = const <Duration>[],
     this.vibrate = false,
     this.offColor = Colors.black,
     this.onColor = Colors.white,
@@ -55,7 +52,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               value: currentSettings.vibrate,
               onChanged: (newValue) {
                 updateSettings(FlasherSettings(
-                  patterns: currentSettings.patterns,
                   vibrate: newValue,
                   offColor: currentSettings.offColor,
                   onColor: currentSettings.onColor,
@@ -67,7 +63,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               onMainColorChange: (ColorSwatch? offColor) {
                 if (offColor == null) return;
                 updateSettings(FlasherSettings(
-                  patterns: currentSettings.patterns,
                   vibrate: currentSettings.vibrate,
                   offColor: Color.fromRGBO(
                     offColor.red,
@@ -92,7 +87,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               onMainColorChange: (ColorSwatch? onColor) {
                 if (onColor == null) return;
                 updateSettings(FlasherSettings(
-                  patterns: currentSettings.patterns,
                   vibrate: currentSettings.vibrate,
                   offColor: currentSettings.offColor,
                   onColor: Color.fromRGBO(

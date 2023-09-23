@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:metronome/Settings.dart';
 
 class PatternBackgroundWidget extends StatefulWidget {
-  final List<Duration> pattern;
+  final FlasherSettings settings;
+  List<Duration> patterns = [];
 
-  PatternBackgroundWidget({required this.pattern});
+  PatternBackgroundWidget({required this.settings, required this.patterns});
 
   @override
   _PatternBackgroundWidgetState createState() =>
@@ -21,10 +23,10 @@ class _PatternBackgroundWidgetState extends State<PatternBackgroundWidget> {
 
   void _startPatternUpdates() async {
     while (mounted) {
-      await Future.delayed(widget.pattern[currentIndex]);
+      await Future.delayed(widget.patterns[currentIndex]);
       if (mounted) {
         setState(() {
-          currentIndex = (currentIndex + 1) % widget.pattern.length;
+          currentIndex = (currentIndex + 1) % widget.patterns.length;
         });
       }
     }
@@ -33,7 +35,7 @@ class _PatternBackgroundWidgetState extends State<PatternBackgroundWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: currentIndex % 2 == 0 ? Colors.black : Colors.white,
+      color: currentIndex % 2 == 0 ? widget.settings.offColor : widget.settings.onColor,
       child: Center(
         child: ElevatedButton(
           onPressed: () {

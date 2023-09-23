@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:metronome/FlashingScreen.dart';
+import 'package:metronome/Settings.dart';
 
 class RecorderWidget extends StatefulWidget {
   final String title;
-  final String settings;
+  final FlasherSettings settings;
 
   const RecorderWidget({required this.title, required this.settings});
 
@@ -40,7 +41,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
   void _clearPresses() {
     setState(() {
       _isRecording = false;
-      centerText = 'Tap to start recording - ${widget.settings}';
+      centerText = 'Tap to start recording';
       _durations = [];
     });
   }
@@ -60,7 +61,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PatternBackgroundWidget(pattern: _durations),
+        builder: (context) => PatternBackgroundWidget(settings: widget.settings, patterns: _durations),
       ),
     );
   }
