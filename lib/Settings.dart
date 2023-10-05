@@ -58,6 +58,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 ));
               },
             ),
+            Text('Off Color'),
             MaterialColorPicker(
               allowShades: false, // default true
               onMainColorChange: (ColorSwatch? offColor) {
@@ -82,6 +83,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 Colors.grey,
               ],
             ),
+            Text('On Color'),
             MaterialColorPicker(
               allowShades: false, // default true
               onMainColorChange: (ColorSwatch? onColor) {
