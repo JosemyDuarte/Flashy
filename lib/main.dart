@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:metronome/FlashingScreen.dart';
 import 'package:metronome/Recorder.dart';
 import 'package:metronome/Settings.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => FlasherSettings(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -34,35 +38,35 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  FlasherSettings settings = FlasherSettings();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flasher',
       home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              title: Text(widget.title),
-              bottom: const TabBar(
-                tabs: [
-                  Tab(text: 'Recorder'),
-                  Tab(text: 'Settings'),
-                ],
-              )),
-          body: TabBarView(
-            children: [
-              RecorderWidget(title: widget.title, settings: settings),
-              SettingsWidget(onSettingsChanged: (settings) {
-                setState(() {
-                  this.settings = settings;
-                });
-              }),
-            ],
-          ),
-        ),
+          length: 2,
+          child: Scaffold(
+            appBar: AppBar(
+                backgroundColor: Theme
+                    .of(context)
+                    .colorScheme
+                    .inversePrimary,
+                title: Text(widget.title),
+                bottom: const TabBar(
+                  tabs: [
+                    Tab(text: 'Recorder'),
+                    Tab(text: 'Settings'),
+                  ],
+                )),
+            body: Consumer<FlasherSettings>(
+                builder: (context, settings, child) {
+                  return TabBarView(
+                    children: [
+                      RecorderWidget(title: widget.title, settings: settings),
+                      SettingsWidget(settings: settings),
+                    ],
+                  );
+                }),
+          )
       ),
     );
   }

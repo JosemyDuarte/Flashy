@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
-class FlasherSettings {
+class FlasherSettings extends ChangeNotifier {
   bool vibrate;
 
   Color offColor;
@@ -13,31 +13,49 @@ class FlasherSettings {
     this.offColor = Colors.black,
     this.onColor = Colors.white,
   });
+
+  void overwrite({
+    bool? vibrate,
+    Color? offColor,
+    Color? onColor,
+  }) {
+    this.vibrate = vibrate ?? this.vibrate;
+    this.offColor = offColor ?? this.offColor;
+    this.onColor = onColor ?? this.onColor;
+
+    notifyListeners();
+  }
 }
 
 typedef SettingsChangedCallback = void Function(FlasherSettings);
 
 class SettingsWidget extends StatefulWidget {
-  final SettingsChangedCallback onSettingsChanged;
+  final FlasherSettings settings;
 
-  SettingsWidget({required this.onSettingsChanged});
+  SettingsWidget({required this.settings});
 
   @override
   _SettingsWidgetState createState() => _SettingsWidgetState();
 }
 
 class _SettingsWidgetState extends State<SettingsWidget> {
-  FlasherSettings currentSettings = FlasherSettings();
-
   // Update the settings and notify the parent when settings are updated
   void updateSettings(FlasherSettings newSettings) {
-    setState(() {
-      currentSettings = newSettings;
-    });
+    print('-' * 20);
+    print('oldVibrate: ${widget.settings.vibrate}');
+    print('oldOffColor: ${widget.settings.offColor}');
+    print('oldOnColor: ${widget.settings.onColor}');
+    print('-' * 20);
+    print('newVibrate: ${newSettings.vibrate}');
+    print('newOffColor: ${newSettings.offColor}');
+    print('newOnColor: ${newSettings.onColor}');
+    print('-' * 20);
 
-    // Call the callback to pass the updated settings back to parent
-    widget.onSettingsChanged(currentSettings);
-    print('Settings updated: ${currentSettings.vibrate}');
+    widget.settings.overwrite(
+      vibrate: newSettings.vibrate,
+      offColor: newSettings.offColor,
+      onColor: newSettings.onColor,
+    );
   }
 
   @override
@@ -49,12 +67,12 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           children: <Widget>[
             Text('Vibrate'),
             Switch(
-              value: currentSettings.vibrate,
+              value: widget.settings.vibrate,
               onChanged: (newValue) {
                 updateSettings(FlasherSettings(
                   vibrate: newValue,
-                  offColor: currentSettings.offColor,
-                  onColor: currentSettings.onColor,
+                  offColor: widget.settings.offColor,
+                  onColor: widget.settings.onColor,
                 ));
               },
             ),
@@ -64,17 +82,17 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               onMainColorChange: (ColorSwatch? offColor) {
                 if (offColor == null) return;
                 updateSettings(FlasherSettings(
-                  vibrate: currentSettings.vibrate,
+                  vibrate: widget.settings.vibrate,
                   offColor: Color.fromRGBO(
                     offColor.red,
                     offColor.green,
                     offColor.blue,
                     offColor.opacity,
                   ),
-                  onColor: currentSettings.onColor,
+                  onColor: widget.settings.onColor,
                 ));
               },
-              selectedColor: currentSettings.offColor,
+              selectedColor: widget.settings.offColor,
               colors: [
                 Colors.red,
                 Colors.deepOrange,
@@ -89,8 +107,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               onMainColorChange: (ColorSwatch? onColor) {
                 if (onColor == null) return;
                 updateSettings(FlasherSettings(
-                  vibrate: currentSettings.vibrate,
-                  offColor: currentSettings.offColor,
+                  vibrate: widget.settings.vibrate,
+                  offColor: widget.settings.offColor,
                   onColor: Color.fromRGBO(
                     onColor.red,
                     onColor.green,
@@ -99,7 +117,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   ),
                 ));
               },
-              selectedColor: currentSettings.onColor,
+              selectedColor: widget.settings.onColor,
               colors: [
                 Colors.red,
                 Colors.deepOrange,
