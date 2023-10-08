@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
-    create: (context) => FlasherSettings(),
+    create: (context) => FlasherModel(),
     child: const MyApp(),
   ));
 }
@@ -57,12 +57,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     Tab(text: 'Settings'),
                   ],
                 )),
-            body: Consumer<FlasherSettings>(
-                builder: (context, settings, child) {
+            body: Consumer<FlasherModel>(
+                builder: (context, model, child) {
                   return TabBarView(
                     children: [
-                      RecorderWidget(title: widget.title, settings: settings),
-                      SettingsWidget(settings: settings),
+                      RecorderWidget(title: widget.title, model: model),
+                      SettingsWidget(model: model),
                     ],
                   );
                 }),

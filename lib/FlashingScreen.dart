@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:metronome/Settings.dart';
 
 class PatternBackgroundWidget extends StatefulWidget {
-  final FlasherSettings settings;
+  final FlasherModel settings;
   List<Duration> patterns = [];
 
   PatternBackgroundWidget({required this.settings, required this.patterns});

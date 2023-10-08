@@ -4,16 +4,16 @@ import 'package:metronome/Settings.dart';
 
 class RecorderWidget extends StatefulWidget {
   final String title;
-  final FlasherSettings settings;
+  final FlasherModel model;
 
-  const RecorderWidget({required this.title, required this.settings});
+  const RecorderWidget({required this.title, required this.model});
 
   @override
   _RecorderWidgetState createState() => _RecorderWidgetState();
 }
 
 class _RecorderWidgetState extends State<RecorderWidget> {
-  List<Duration> _durations = [];
+  //List<Duration> _durations = [];
   bool _isRecording = false;
 
   DateTime lastPress = DateTime.timestamp();
@@ -33,7 +33,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
       previousPress = lastPress;
       lastPress = DateTime.timestamp();
 
-      _durations.add(lastPress.difference(previousPress));
+      widget.model.addPattern(lastPress.difference(previousPress));
     });
   }
 
@@ -42,7 +42,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
     setState(() {
       _isRecording = false;
       centerText = 'Tap to start recording';
-      _durations = [];
+      widget.model.overwritePatterns([]);
     });
   }
 
@@ -50,7 +50,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
   void _stopRecording() {
     setState(() {
       _isRecording = false;
-      if (_durations.length > 0) {
+      if (widget.model.pattern.length > 0) {
         centerText = 'Hit play to start flashing\n\n or tap to record again';
       } else
         centerText = 'Tap to start recording';
@@ -61,7 +61,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PatternBackgroundWidget(settings: widget.settings, patterns: _durations),
+        builder: (context) => PatternBackgroundWidget(settings: widget.model, patterns: widget.model.pattern),
       ),
     );
   }
@@ -74,7 +74,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
           Expanded(
             child: InkWell(
               onTap: _recordPress,
-              splashColor: widget.settings.onColor,
+              splashColor: widget.model.onColor,
               child: Center(
                 child: Text(
                   '${centerText}',
@@ -91,12 +91,12 @@ class _RecorderWidgetState extends State<RecorderWidget> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text('${_durations.length}'),
+              Text('${widget.model.pattern.length}'),
             ],
           ),
           OverflowBar(
             children: [
-              for (var i = 0; i < _durations.length; i++)
+              for (var i = 0; i < widget.model.pattern.length; i++)
                 Container(
                   width: 10,
                   height: 10,
@@ -115,12 +115,12 @@ class _RecorderWidgetState extends State<RecorderWidget> {
           mainAxisAlignment: MainAxisAlignment.center, // Center the buttons
           children: <Widget>[
             TextButton(
-              onPressed: _durations.length > 0 ? _clearPresses : null,
+              onPressed: widget.model.pattern.length > 0 ? _clearPresses : null,
               child: const Icon(Icons.bolt),
             ),
             Spacer(),
             TextButton(
-              onPressed: !_isRecording && _durations.length > 0
+              onPressed: !_isRecording && widget.model.pattern.length > 0
                   ? _playRecording
                   : null,
               child: const Icon(Icons.play_arrow),
