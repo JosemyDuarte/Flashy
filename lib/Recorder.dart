@@ -74,6 +74,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
           Expanded(
             child: InkWell(
               onTap: _recordPress,
+              splashColor: widget.settings.onColor,
               child: Center(
                 child: Text(
                   '${centerText}',

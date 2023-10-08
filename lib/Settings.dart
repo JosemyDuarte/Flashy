@@ -27,8 +27,6 @@ class FlasherSettings extends ChangeNotifier {
   }
 }
 
-typedef SettingsChangedCallback = void Function(FlasherSettings);
-
 class SettingsWidget extends StatefulWidget {
   final FlasherSettings settings;
 
