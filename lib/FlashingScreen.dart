@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:metronome/Settings.dart';
+import 'package:vibration/vibration.dart';
 
 class PatternBackgroundWidget extends StatefulWidget {
   final FlasherModel settings;
@@ -23,6 +24,13 @@ class _PatternBackgroundWidgetState extends State<PatternBackgroundWidget> {
 
   void _startPatternUpdates() async {
     while (mounted) {
+      if (widget.settings.vibrate) {
+        currentIndex % 2 == 0
+            ? Vibration.vibrate(
+                duration: widget.patterns[currentIndex].inMilliseconds)
+            : Vibration.cancel();
+      }
+
       await Future.delayed(widget.patterns[currentIndex]);
       if (mounted) {
         setState(() {
@@ -35,10 +43,13 @@ class _PatternBackgroundWidgetState extends State<PatternBackgroundWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: currentIndex % 2 == 0 ? widget.settings.offColor : widget.settings.onColor,
+      color: currentIndex % 2 == 0
+          ? widget.settings.offColor
+          : widget.settings.onColor,
       child: Center(
         child: ElevatedButton(
           onPressed: () {
+            Vibration.cancel();
             Navigator.pop(context);
           },
           child: const Text('Stop'),
