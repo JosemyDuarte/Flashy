@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 
 class FlasherModel extends ChangeNotifier {
   bool vibrate;
@@ -43,6 +43,18 @@ class FlasherModel extends ChangeNotifier {
   List<Duration> get pattern => _pattern;
 }
 
+// Make a custom ColorSwatch to name map from the above custom colors.
+final Map<ColorSwatch<Object>, String> colorsNameMap =
+<ColorSwatch<Object>, String>{
+  ColorTools.createPrimarySwatch(Colors.black): 'Black',
+  ColorTools.createPrimarySwatch(Colors.white): 'White',
+  ColorTools.createAccentSwatch(Colors.blue): 'Blue',
+  ColorTools.createAccentSwatch(Colors.red): 'Red',
+  ColorTools.createPrimarySwatch(Colors.yellow): 'Yellow',
+  ColorTools.createPrimarySwatch(Colors.green): 'Green',
+  ColorTools.createPrimarySwatch(Colors.deepPurple): 'Purple',
+};
+
 class SettingsWidget extends StatefulWidget {
   final FlasherModel model;
 
@@ -80,55 +92,94 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 ));
               },
             ),
-            Text('Off Color'),
-            MaterialColorPicker(
-              allowShades: false, // default true
-              onMainColorChange: (ColorSwatch? offColor) {
-                if (offColor == null) return;
-                updateSettings(FlasherModel(
-                  vibrate: widget.model.vibrate,
-                  offColor: Color.fromRGBO(
-                    offColor.red,
-                    offColor.green,
-                    offColor.blue,
-                    offColor.opacity,
+            // Show the color picker in sized box in a raised card.
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: Card(
+                  elevation: 1,
+                  child: ColorPicker(
+                    // Use the screenPickerColor as start color.
+                    color: widget.model.onColor,
+                    // Update the screenPickerColor using the callback.
+                    onColorChanged: (Color color) {
+                      setState(() {
+                        widget.model.updateSettings(
+                          vibrate: widget.model.vibrate,
+                          offColor: widget.model.offColor,
+                          onColor: color,
+                        );
+                      });
+                    },
+                    width: 44,
+                    height: 44,
+                    borderRadius: 22,
+                    heading: Text(
+                      'On Color',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headlineSmall,
+                    ),
+                    pickersEnabled: const <ColorPickerType, bool>{
+                      ColorPickerType.both: false,
+                      ColorPickerType.primary: false,
+                      ColorPickerType.accent: false,
+                      ColorPickerType.bw: false,
+                      ColorPickerType.custom: true,
+                      ColorPickerType.wheel: false,
+                    },
+                    subheading: null,
+                    enableShadesSelection: false,
+                    customColorSwatchesAndNames: colorsNameMap,
                   ),
-                  onColor: widget.model.onColor,
-                ));
-              },
-              selectedColor: widget.model.offColor,
-              colors: [
-                Colors.red,
-                Colors.deepOrange,
-                Colors.yellow,
-                Colors.lightGreen,
-                Colors.grey,
-              ],
+                ),
+              ),
             ),
-            Text('On Color'),
-            MaterialColorPicker(
-              allowShades: false, // default true
-              onMainColorChange: (ColorSwatch? onColor) {
-                if (onColor == null) return;
-                updateSettings(FlasherModel(
-                  vibrate: widget.model.vibrate,
-                  offColor: widget.model.offColor,
-                  onColor: Color.fromRGBO(
-                    onColor.red,
-                    onColor.green,
-                    onColor.blue,
-                    onColor.opacity,
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: Card(
+                  elevation: 1,
+                  child: ColorPicker(
+                    // Use the screenPickerColor as start color.
+                    color: widget.model.offColor,
+                    // Update the screenPickerColor using the callback.
+                    onColorChanged: (Color color) {
+                      setState(() {
+                        widget.model.updateSettings(
+                          vibrate: widget.model.vibrate,
+                          offColor: color,
+                          onColor: widget.model.onColor,
+                        );
+                      });
+                    },
+                    width: 44,
+                    height: 44,
+                    borderRadius: 22,
+                    heading: Text(
+                      'Off Color',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headlineSmall,
+                    ),
+                    pickersEnabled: const <ColorPickerType, bool>{
+                      ColorPickerType.both: false,
+                      ColorPickerType.primary: false,
+                      ColorPickerType.accent: false,
+                      ColorPickerType.bw: false,
+                      ColorPickerType.custom: true,
+                      ColorPickerType.wheel: false,
+                    },
+                    subheading: null,
+                    enableShadesSelection: false,
+                    customColorSwatchesAndNames: colorsNameMap,
                   ),
-                ));
-              },
-              selectedColor: widget.model.onColor,
-              colors: [
-                Colors.red,
-                Colors.deepOrange,
-                Colors.yellow,
-                Colors.lightGreen,
-                Colors.grey,
-              ],
+                ),
+              ),
             )
           ],
         ),
