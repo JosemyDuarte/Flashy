@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:metronome/FlashingScreen.dart';
 import 'package:metronome/Settings.dart';
+import 'package:vibration/vibration.dart';
 
 class RecorderWidget extends StatefulWidget {
   final String title;
@@ -22,6 +23,10 @@ class _RecorderWidgetState extends State<RecorderWidget> {
 
   void _recordPress() {
     setState(() {
+      if (widget.model.vibrate) {
+        Vibration.vibrate(duration: 250, amplitude: 50);
+      }
+
       if (!_isRecording) {
         _isRecording = true;
         centerText = 'Recording...';
@@ -94,20 +99,6 @@ class _RecorderWidgetState extends State<RecorderWidget> {
               Text('${widget.model.pattern.length}'),
             ],
           ),
-          OverflowBar(
-            children: [
-              for (var i = 0; i < widget.model.pattern.length; i++)
-                Container(
-                  width: 10,
-                  height: 10,
-                  margin: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: i % 2 == 0 ? Colors.black : Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-            ],
-          )
         ],
       ),
       persistentFooterButtons: <Widget>[

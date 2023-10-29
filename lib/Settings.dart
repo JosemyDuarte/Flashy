@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 
+import 'package:vibration/vibration.dart';
+
 class FlasherModel extends ChangeNotifier {
   bool vibrate;
 
@@ -45,7 +47,7 @@ class FlasherModel extends ChangeNotifier {
 
 // Make a custom ColorSwatch to name map from the above custom colors.
 final Map<ColorSwatch<Object>, String> colorsNameMap =
-<ColorSwatch<Object>, String>{
+    <ColorSwatch<Object>, String>{
   ColorTools.createPrimarySwatch(Colors.black): 'Black',
   ColorTools.createPrimarySwatch(Colors.white): 'White',
   ColorTools.createAccentSwatch(Colors.blue): 'Blue',
@@ -85,6 +87,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             Switch(
               value: widget.model.vibrate,
               onChanged: (newValue) {
+                if (newValue) {
+                  Vibration.vibrate(duration: 250, amplitude: 50);
+                }
                 updateSettings(FlasherModel(
                   vibrate: newValue,
                   offColor: widget.model.offColor,
@@ -117,10 +122,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     borderRadius: 22,
                     heading: Text(
                       'On Color',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headlineSmall,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     pickersEnabled: const <ColorPickerType, bool>{
                       ColorPickerType.both: false,
@@ -161,10 +163,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     borderRadius: 22,
                     heading: Text(
                       'Off Color',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headlineSmall,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     pickersEnabled: const <ColorPickerType, bool>{
                       ColorPickerType.both: false,
