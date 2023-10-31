@@ -4,10 +4,14 @@ import 'package:metronome/Settings.dart';
 import 'package:vibration/vibration.dart';
 
 class RecorderWidget extends StatefulWidget {
+  const RecorderWidget({
+    Key? key,
+    required this.title,
+    required this.model,
+  }) : super(key: key);
+
   final String title;
   final FlasherModel model;
-
-  const RecorderWidget({required this.title, required this.model});
 
   @override
   _RecorderWidgetState createState() => _RecorderWidgetState();
@@ -66,7 +70,8 @@ class _RecorderWidgetState extends State<RecorderWidget> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PatternBackgroundWidget(settings: widget.model, patterns: widget.model.pattern),
+        builder: (context) => PatternBackgroundWidget(
+            settings: widget.model, patterns: widget.model.pattern),
       ),
     );
   }

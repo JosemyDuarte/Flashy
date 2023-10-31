@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "514174485372",
+    "project_id": "pattern-flash",
+    "storage_bucket": "pattern-flash.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:514174485372:android:3b359fc141f5d257899af9",
+        "android_client_info": {
+          "package_name": "com.mito.metronome"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr2vgeRSobA0k1LZnl6T2dDTeYI01ouaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
