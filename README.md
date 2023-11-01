@@ -1,6 +1,6 @@
-# metronome
+# pattern_flash
 
-A simple metronome
+A flash with pattern colors
 
 ## Getting Started
 

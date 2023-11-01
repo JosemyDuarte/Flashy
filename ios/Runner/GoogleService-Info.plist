@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyD6G8cEXURATBe0tdATGGAtdyG06biw0Fs</string>
+	<string>AIzaSyDFApOZxwWFhEJj7xY14lSJyzk6NwKKAF0</string>
 	<key>GCM_SENDER_ID</key>
-	<string>514174485372</string>
+	<string>511688382951</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.mito.metronome</string>
+	<string>com.mito.patternFlash</string>
 	<key>PROJECT_ID</key>
-	<string>pattern-flash</string>
+	<string>u-pattern-flasher</string>
 	<key>STORAGE_BUCKET</key>
-	<string>pattern-flash.appspot.com</string>
+	<string>u-pattern-flasher.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:514174485372:ios:03ae91d26c251207899af9</string>
+	<string>1:511688382951:ios:b85146d6c719cc2caac542</string>
 </dict>
 </plist>

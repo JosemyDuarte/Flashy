@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:metronome/FlashingScreen.dart';
-import 'package:metronome/Settings.dart';
+import 'package:pattern_flash/flashing_screen.dart';
+import 'package:pattern_flash/settings.dart';
 import 'package:vibration/vibration.dart';
 
 class RecorderWidget extends StatefulWidget {

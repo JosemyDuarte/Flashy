@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:metronome/FlashingScreen.dart';
-import 'package:metronome/Recorder.dart';
-import 'package:metronome/Settings.dart';
+import 'package:pattern_flash/recorder.dart';
+import 'package:pattern_flash/settings.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
