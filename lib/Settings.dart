@@ -83,7 +83,10 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Vibrate'),
+            Text(
+              'Vibrate',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
             Switch(
               value: widget.model.vibrate,
               onChanged: (newValue) {

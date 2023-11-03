@@ -23,7 +23,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
 
   DateTime lastPress = DateTime.timestamp();
   DateTime previousPress = DateTime.timestamp();
-  String centerText = 'Tap to start recording';
+  String centerText = 'Tap here to record your pattern';
 
   void _recordPress() {
     setState(() {
@@ -50,7 +50,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
   void _clearPresses() {
     setState(() {
       _isRecording = false;
-      centerText = 'Tap to start recording';
+      centerText = 'Tap here to record your pattern';
       widget.model.overwritePatterns([]);
     });
   }
@@ -60,9 +60,10 @@ class _RecorderWidgetState extends State<RecorderWidget> {
     setState(() {
       _isRecording = false;
       if (widget.model.pattern.length > 0) {
-        centerText = 'Hit play to start flashing\n\n or tap to record again';
+        centerText =
+            'Hit ▶️ to reproduce your pattern or tap here to record again';
       } else
-        centerText = 'Tap to start recording';
+        centerText = 'Tap here to record your pattern';
     });
   }
 
@@ -85,10 +86,14 @@ class _RecorderWidgetState extends State<RecorderWidget> {
             child: InkWell(
               onTap: _recordPress,
               splashColor: widget.model.onColor,
-              child: Center(
-                child: Text(
-                  '${centerText}',
-                  style: Theme.of(context).textTheme.headlineMedium,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Center(
+                  child: Text(
+                    centerText,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                 ),
               ),
             ),
@@ -112,7 +117,7 @@ class _RecorderWidgetState extends State<RecorderWidget> {
           children: <Widget>[
             TextButton(
               onPressed: widget.model.pattern.length > 0 ? _clearPresses : null,
-              child: const Icon(Icons.bolt),
+              child: const Icon(Icons.delete),
             ),
             Spacer(),
             TextButton(
