@@ -9,9 +9,16 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    await FirebaseAnalytics.instance
+        .setDefaultEventParameters({"version": '1.0.0'});
+  } catch (e) {
+    print("Failed to initialize Firebase: $e");
+  }
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
@@ -63,6 +70,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // add setCurrentScreen instead of initState because might not always give you the
+    // expected results because initState() is called before the widget
+    // is fully initialized, so the screen might not be visible yet.
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: "Home Page");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pattern Flasher',
@@ -70,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
           length: 2,
           child: Scaffold(
             appBar: AppBar(
-                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                backgroundColor: Colors.teal,
                 title: Text(widget.title),
                 bottom: const TabBar(
                   tabs: [

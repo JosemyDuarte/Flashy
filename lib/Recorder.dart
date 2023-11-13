@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:pattern_flash/flashing_screen.dart';
 import 'package:pattern_flash/settings.dart';
@@ -25,6 +26,15 @@ class _RecorderWidgetState extends State<RecorderWidget> {
   DateTime previousPress = DateTime.timestamp();
   String centerText = 'Tap here to record your pattern';
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // add setCurrentScreeninstead of initState because might not always give you the
+    // expected results because initState() is called before the widget
+    // is fully initialized, so the screen might not be visible yet.
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: "Recorder tab");
+  }
+
   void _recordPress() {
     setState(() {
       if (widget.model.vibrate) {
@@ -48,6 +58,10 @@ class _RecorderWidgetState extends State<RecorderWidget> {
 
   // clean up the presses and durations
   void _clearPresses() {
+    FirebaseAnalytics.instance.logEvent(
+      name: 'recorder_clear',
+    );
+
     setState(() {
       _isRecording = false;
       centerText = 'Tap here to record your pattern';
@@ -57,6 +71,10 @@ class _RecorderWidgetState extends State<RecorderWidget> {
 
   // stop recording
   void _stopRecording() {
+    FirebaseAnalytics.instance.logEvent(
+      name: 'recorder_stop',
+    );
+
     setState(() {
       _isRecording = false;
       if (widget.model.pattern.length > 0) {
@@ -68,6 +86,10 @@ class _RecorderWidgetState extends State<RecorderWidget> {
   }
 
   void _playRecording() {
+    FirebaseAnalytics.instance.logEvent(
+      name: 'recorder_play',
+    );
+
     Navigator.push(
       context,
       MaterialPageRoute(

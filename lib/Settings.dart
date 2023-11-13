@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 
@@ -67,6 +68,15 @@ class SettingsWidget extends StatefulWidget {
 }
 
 class _SettingsWidgetState extends State<SettingsWidget> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // add setCurrentScreeninstead of initState because might not always give you the
+    // expected results because initState() is called before the widget
+    // is fully initialized, so the screen might not be visible yet.
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: "Settings tab");
+  }
+
   // Update the settings and notify the parent when settings are updated
   void updateSettings(FlasherModel newModel) {
     widget.model.updateSettings(
