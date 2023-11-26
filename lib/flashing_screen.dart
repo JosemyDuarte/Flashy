@@ -1,8 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:pattern_flash/settings.dart';
 import 'package:vibration/vibration.dart';
+
+import 'flasher_model.dart';
 
 class PatternBackgroundWidget extends StatefulWidget {
   final FlasherModel settings;

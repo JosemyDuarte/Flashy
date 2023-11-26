@@ -1,8 +1,9 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:pattern_flash/flashing_screen.dart';
-import 'package:pattern_flash/settings.dart';
 import 'package:vibration/vibration.dart';
+
+import 'flasher_model.dart';
 
 class RecorderWidget extends StatefulWidget {
   const RecorderWidget({
