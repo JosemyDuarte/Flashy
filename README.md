@@ -1,16 +1,13 @@
 # pattern_flash
 
-A flash with pattern colors
+A simple flash with patterns and colors.
 
-## Getting Started
+## Screenshots
 
-This project is a starting point for a Flutter application.
+![01_flashy_home.png](.github/assets/01_flashy_home.png)
 
-A few resources to get you started if this is your first Flutter project:
+![02_flashy_settings.png](.github/assets/02_flashy_settings.png)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![03_flashy_recorded.png](.github/assets/03_flashy_recorded.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![04_flashy_playing.png](.github/assets/04_flashy_playing.png)
