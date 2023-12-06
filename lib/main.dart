@@ -40,10 +40,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Pattern Flasher',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigoAccent),
           useMaterial3: true,
+          visualDensity: VisualDensity.standard,
         ),
         navigatorObservers: <NavigatorObserver>[observer],
         home: MyHomePage(
@@ -81,29 +83,26 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pattern Flasher',
-      home: DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-                backgroundColor: Colors.teal,
-                title: Text(widget.title),
-                bottom: const TabBar(
-                  tabs: [
-                    Tab(text: 'Recorder'),
-                    Tab(text: 'Settings'),
-                  ],
-                )),
-            body: Consumer<FlasherModel>(builder: (context, model, child) {
-              return TabBarView(
-                children: [
-                  RecorderWidget(title: widget.title, model: model),
-                  SettingsWidget(model: model),
-                ],
-              );
-            }),
-          )),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+            title: Text(widget.title),
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: 'Recorder'),
+                Tab(text: 'Settings'),
+              ],
+            )),
+        body: Consumer<FlasherModel>(builder: (context, model, child) {
+          return TabBarView(
+            children: [
+              RecorderWidget(title: widget.title, model: model),
+              SettingsWidget(model: model),
+            ],
+          );
+        }),
+      ),
     );
   }
 }
