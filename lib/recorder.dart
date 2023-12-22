@@ -108,7 +108,8 @@ class _RecorderWidgetState extends State<RecorderWidget> {
           Expanded(
             child: InkWell(
               onTap: _recordPress,
-              splashColor: widget.model.onColor,
+              splashColor: widget.model.offColor,
+              splashFactory: InkSplash.splashFactory,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Center(
